@@ -16,14 +16,20 @@ public class GlobalExceptionHandler {
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<String> handlingException(Exception ex)
-    {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình xử lý!");
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    ResponseEntity<String> handlingException(Exception ex)
+//    {
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình xử lý!");
+//    }
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<String> handlingValidationException(MethodArgumentNotValidException ex)
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getFieldError().getDefaultMessage());
+    }
+
+    @ExceptionHandler(value = ServerExCeption.class)
+    ResponseEntity<String> HandlingServerExCeption(ServerExCeption ex)
+    {
+        return ResponseEntity.status(ex.getErrorCode().getCode()).body(ex.getMessage());
     }
 }

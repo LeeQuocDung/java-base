@@ -1,8 +1,10 @@
 package com.example.indentity_service.service;
 
+import com.example.indentity_service.Enum.ErrorCode;
 import com.example.indentity_service.dto.request.UserCreationRequest;
 import com.example.indentity_service.dto.request.UserUpdateRequest;
 import com.example.indentity_service.entity.User;
+import com.example.indentity_service.exception.ServerExCeption;
 import com.example.indentity_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class UserService {
 
     public User getUserById(String id)
     {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
+        return userRepository.findById(id).orElseThrow(() -> new ServerExCeption(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     public User updateUser(String id, UserUpdateRequest request)
