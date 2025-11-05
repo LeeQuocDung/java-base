@@ -3,8 +3,10 @@ package com.example.indentity_service.service;
 import com.example.indentity_service.Enum.ErrorCode;
 import com.example.indentity_service.dto.request.UserCreationRequest;
 import com.example.indentity_service.dto.request.UserUpdateRequest;
+import com.example.indentity_service.dto.response.UserResponse;
 import com.example.indentity_service.entity.User;
 import com.example.indentity_service.exception.ServerExCeption;
+import com.example.indentity_service.mapper.UserMapper;
 import com.example.indentity_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,17 +17,15 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserMapper userMapper;
 
     public User createUser(UserCreationRequest request) {
         if(userRepository.existsByUsername(request.getUsername()))
             throw new RuntimeException("Đã tồn tại user");
 
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setDob(request.getDob());
+
+        User user = userMapper.toUser(request);
 
         return userRepository.save(user);
     }
@@ -34,19 +34,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(String id)
+    public UserResponse getUserById(String id)
     {
-        return userRepository.findById(id).orElseThrow(() -> new ServerExCeption(ErrorCode.INTERNAL_SERVER_ERROR));
+        return userMapper.toResponse(userRepository.findById(id).orElseThrow(() -> new ServerExCeption(ErrorCode.INTERNAL_SERVER_ERROR)));
     }
 
     public User updateUser(String id, UserUpdateRequest request)
     {
         var user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
 
-        user.setPassword(request.getPassword());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setDob(request.getDob());
+        userMapper.mapUpdateUser(user,request);
 
         return userRepository.save(user);
     }
