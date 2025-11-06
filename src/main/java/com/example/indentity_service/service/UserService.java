@@ -8,17 +8,20 @@ import com.example.indentity_service.entity.User;
 import com.example.indentity_service.exception.ServerExCeption;
 import com.example.indentity_service.mapper.UserMapper;
 import com.example.indentity_service.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE , makeFinal = true)
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserMapper userMapper;
+     UserRepository userRepository;
+     UserMapper userMapper;
 
     public User createUser(UserCreationRequest request) {
         if(userRepository.existsByUsername(request.getUsername()))
