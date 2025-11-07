@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: F88-ECM
+  datasource:
+    url: "jdbc:mysql://localhost:3306/identity-service"
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  data:
+    mongodb:
+      uri: mongodb://root:DPnCLZwOY0kw4Yj@lending-ddb.cy3fyulvxr64.ap-southeast-1.docdb.amazonaws.com:27017/sit-static?ssl=true&retryWrites=false
+      database: sit-static
+
+static-api:
+  file-domain: "https://static-dev.f88.vn/"
+
+server:
+  port: 8080
+#  servlet:
+#    context-path: /v1
+
